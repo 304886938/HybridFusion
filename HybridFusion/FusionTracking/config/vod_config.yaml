@@ -1,0 +1,56 @@
+basic:
+  split: 'val'         # dataset split, val/test
+  has_velo: False       # whether detector has velo info
+  LiDAR_interval: 0.1  # the interval between two adjacent frames of the LiDAR scan, VoD: 10HZ
+  CLASS_NUM: 3         # number of tracking category
+
+  # CLASS_LABEL: {'car': 0, 
+  #               'pedestrian': 1, 
+  #               'cyclist': 2}
+preprocessing:
+  SF_thre: {0: 0.15, 1: 0.15, 2: 0.15}
+  NMS_thre: 0.08
+  NMS_type: blend_nms  # blend_nms, no_blend_nms, blend_soft_nms
+  NMS_metric: giou_bev  # iou_bev, iou_3d, giou_bev, giou_3d, d_eucl
+
+association:
+  first_level: True
+  first_level_metrics: {0: 'giou_bev', 1: 'giou_bev', 2: 'giou_bev'}  # per-category metric for stage-1 (align with first_level)
+  second_level: True  # Whether to use second level data association
+  second_level_metrics: {0: feat_similarity', 1: 'feat_similarity', 2: 'feat_similarity'}  # appearance
+  # Appearance-based second_level association (use detector query embedding as appearance feature)
+  appearance:
+    enable: True
+    feat_key: det_queries      # key in data_info / det_infos that stores query embeddings, shape [N, C]
+    mode: qk_softmax           # qk_softmax | qk_logits | cosine
+    temperature: 1.0           # similarity temperature (only for qk_* modes)
+    long_lambda: 0.1           # EMA update rate for long-term memory (0~1)
+    min_sim: 0.5               # similarity threshold for accepting second-stage match
+    use_dab: False            # whether to use DAB-style query encoding (default False)
+    hidden_dim: 256           # query embedding dim; set to your decoder query dim
+  first_thre: {0: -0.4, 1: -0.5, 2: -0.6}  # category-specific first_level thresholds
+  second_thre: {0: 0.5, 1: 0.5, 2: 0.5}  # two-stage thresholds (appearance similarity gate)
+  algorithm: 'Greedy'  # Greedy, Hungarian, Mutual Nearest Neighbor(MNN)
+
+motion_model:
+  # two kalman filter, LinearKalmanFilter, ExtendKalmanFilter
+  # filter: {1: 'ExtendKalmanFilter', 0: 'ExtendKalmanFilter', 2: 'ExtendKalmanFilter', 3: 'ExtendKalmanFilter', 4: 'ExtendKalmanFilter', 5: 'ExtendKalmanFilter', 6: 'ExtendKalmanFilter'}
+  # five motion model, Linear Model: CV, CA, Non-Linear: CTRA, CTRV, BICYCLE
+  # note the consistency of the linear relationship between the model and the filter
+  filter: {0: 'UnscentedKalmanFilter', 1: 'UnscentedKalmanFilter', 2: 'UnscentedKalmanFilter'}
+  model: {0: 'CTRA', 1: 'CTRV', 2: 'BICYCLE'}
+
+life_cycle:
+  max_age: {0: 15, 1: 10, 2: 10}
+  min_hit: {0: 1, 1: 1, 2: 1}
+  decay_rate: {0: 0.2, 1: 0.15, 2: 0.05}
+
+output:
+  punish_num: 1         # The maximum number of predicted frames to write to the output file
+  post_nms: False       # whether to use post-nms, this feature is used to reduce FP prediction
+  NMS_thre: 0.08
+  NMS_type: blend_nms   # blend_nms, no_blend_nms, blend_soft_nms
+  NMS_metric: giou_bev   # iou_bev, iou_3d, giou_bev, giou_3d, d_eucl
+
+debug:
+  is_debug: true # Whether to debug the code

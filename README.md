@@ -41,8 +41,4 @@ bash tools/dist_test.sh HybridFusion/FusionDetection/configs/cam_lidar_radar.py 
 ```
 ```
 
-Contact: Xuanyao Chen at: `2112004009@stmail.ujs.edu.cn` or `chengzhang971011@gmail.com`
-
-
-
-
+Contact: Cheng Zhang at: 2112004009@stmail.ujs.edu.cn or chengzhang971011@gmail.com

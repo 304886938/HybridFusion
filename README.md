@@ -26,32 +26,22 @@ pip3 install -v -e .
 
 ## Train
 
-For example, to train HybirdFusion with Camer-LiDAR-Radar-Fusion on 8 GPUs, please use
+For example, to train HybirdFusion with Camera-LiDAR-Radar-Fusion on 8 GPUs, please use
 
 ```
-bash tools/dist_train.sh plugin/futr3d/configs/lidar_only/lidar_0075_900q.py 8
+bash tools/dist_train.sh HybridFusion/FusionDetection/configs/cam_lidar_radar.py 8
 ```
-
-For LiDAR-Cam and Cam-Radar version, we need pre-trained model. 
-
-The Cam-Radar uses DETR3D model as pre-trained model, please check [DETR3D](https://github.com/WangYueFt/detr3d).
-
-The LiDAR-Cam uses fused LiDAR-only and Cam-only model as pre-trained model. You can use
-
-```
-python tools/fuse_model.py --img <cam checkpoint path> --lidar <lidar checkpoint path> --out <out model path>
-```
-to fuse cam-only and lidar-only models.
 
 ## Evaluate
 
-For example, to evalaute FUTR3D with LiDAR-cam on 8 GPUs, please use
+For example, to evalaute HybirdFusion with Camera-LiDAR-Radar-Fusion on 8 GPUs, please use
 
 ```
-bash tools/dist_train.sh plugin/futr3d/configs/lidar_cam/lidar_0075_cam_res101.py ../lidar_cam.pth 8 --eval bbox
+bash tools/dist_test.sh HybridFusion/FusionDetection/configs/cam_lidar_radar.py 8 --eval bbox
 ```
 ```
 
 Contact: Xuanyao Chen at: `xuanyaochen19@fudan.edu.cn` or `ixyaochen@gmail.com`
+
 
 

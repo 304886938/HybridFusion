@@ -3,6 +3,12 @@ This repo implements the paper HybridFusion: A Universal Multimodal Data Fusion 
 
 We built our implementation upon MMdetection3D. The major part of the code is in the directory `HybridFusion`. 
 
+<p align="center">
+  <b>Multimodal 3D Detection and Tracking Demo</b><br><br>
+  <img src="demo/GIF.gif" width="900"/> 
+</p>
+
+
 ## Environment
 ### Prerequisite
 <ol>
@@ -42,3 +48,4 @@ bash tools/dist_test.sh HybridFusion/FusionDetection/configs/cam_lidar_radar.py 
 ```
 
 Contact: Cheng Zhang at: 2112004009@stmail.ujs.edu.cn or chengzhang971011@gmail.com
+
